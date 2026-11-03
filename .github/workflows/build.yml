@@ -1,0 +1,29 @@
+name: build
+on: [push, workflow_dispatch]
+
+jobs:
+  deb:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          brew install ldid xz make
+          export THEOS=$HOME/theos
+          git clone --recursive --depth 1 https://github.com/theos/theos.git $THEOS
+          curl -sL https://github.com/theos/sdks/archive/master.tar.gz | tar xz -C /tmp
+          mkdir -p $THEOS/sdks
+          mv /tmp/sdks-master/*.sdk $THEOS/sdks/
+
+      - name: Build
+        run: |
+          export THEOS=$HOME/theos
+          export PATH=$THEOS/bin:$PATH
+          make package FINALPACKAGE=1 DEBUG=0
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CriticalOpsMenu-deb
+          path: packages/*.deb
+          retention-days: 30
