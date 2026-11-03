@@ -1,0 +1,9 @@
+Package: com.venice.critopsmenu
+Name: C-Ops Menu
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: ESP / Aimbot / Radar / NoShake / Skins
+Maintainer: you
+Author: you
+Section: Tweaks
+Depends: mobilesubstrate
